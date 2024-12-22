@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Translate Button(KoboldCpp V1 API)
 // @namespace    https://github.com/cronrpc/Translate-Local-Tampermonkey
-// @version      1.0
+// @version      1.0.1
 // @description  A script that adds a translation button to selected text in Tampermonkey.
 // @author       cronrpc
 // @match        *://*/*
@@ -69,23 +69,30 @@
     resultBox.id = 'resultBox';
     document.body.appendChild(resultBox);
 
+    let lastSelectedText = ""
     // 鼠标松开事件，用于弹出按钮
-    document.addEventListener('mouseup', () => {
+    document.addEventListener('mouseup', (event) => {
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
 
         // 如果有选中内容，显示按钮
-        if (selectedText) {
-            const range = selection.getRangeAt(0).getBoundingClientRect();
-            button.style.top = `${window.scrollY + range.top - button.offsetHeight - 5}px`;
-            button.style.left = `${window.scrollX + range.left}px`;
-            button.style.display = 'block';
-            button.dataset.text = selectedText;
+        if (selectedText && selectedText !== lastSelectedText) {
+            if (!button.contains(event.target) && !resultBox.contains(event.target)) {
+                const top = event.clientY;
+                const left = event.clientX; // 鼠标的 X 坐标
+                button.style.top = `${window.scrollY + top - button.offsetHeight - 5}px`;
+                button.style.left = `${window.scrollX + left}px`;
+                button.style.display = 'block';
+                button.dataset.text = selectedText;
+            }
         } else {
             // 如果没有选中内容，隐藏按钮和结果框
-            button.style.display = 'none';
-            resultBox.style.display = 'none';
+            if (!button.contains(event.target) && !resultBox.contains(event.target)) {
+                button.style.display = 'none';
+                resultBox.style.display = 'none';
+            }
         }
+        lastSelectedText = selectedText;
     });
 
     // 按钮点击事件
@@ -104,7 +111,7 @@
         // 构造请求体
         const requestBody = {
             max_context_length: 2048,
-            max_length: 100,
+            max_length: 150,
             prompt: translate_prompt,
             quiet: false,
             rep_pen: 1.1,
