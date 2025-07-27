@@ -1,6 +1,6 @@
 # Translate-Button-Tampermonkey
 
-Uses a local API [KoboldCpp](https://github.com/LostRuins/koboldcpp) for translation.
+Uses a local API [KoboldCpp](https://github.com/LostRuins/koboldcpp) and Ollama for translation.
 
 English | [中文](#chinese-section)
 
