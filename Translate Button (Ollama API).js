@@ -17,7 +17,7 @@
     /* -------- 可自定义的设置 -------- */
     const OLLAMA_ENDPOINT = 'http://localhost:11434/api/generate'; // 本地 Ollama API
     const OLLAMA_MODEL   = GM_getValue('ollamaModel', 'llama3');   // 默认模型，可在下方菜单里改
-    const MAX_TOKENS     = 150;                                    // 对应 Ollama 的 num_predict
+    const MAX_TOKENS     = 500;                                    // 对应 Ollama 的 num_predict
 
     /* -------- 目标语言菜单 -------- */
     const targetLanguageList = ['Chinese', 'English', 'Japanese'];
